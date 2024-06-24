@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SIgnup = () => {
+const Login = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
     const data = {
-      name: name,
       email: email,
       password: password,
     };
-    const result = await fetch("http://localhost:5000/signup", {
+    const result = await fetch("http://localhost:5000/login", {
       method: "post",
       body: JSON.stringify(data),
       headers: {
@@ -21,32 +19,16 @@ const SIgnup = () => {
       },
     });
     const res = await result.json();
-    localStorage.setItem("user", JSON.stringify(res));
-    if (res) {
+    if (res.email) {
+      localStorage.setItem("user", JSON.stringify(res));
       navigate("/");
     }
   };
 
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      navigate("/");
-    }
-  }, []);
   return (
     <div className="shadow p-7 max-w-[600px] mx-auto space-y-5">
-      <h1>Signup</h1>
-      <div className="flex gap-2 items-center">
-        <label>Name</label>
-        <input
-          type="text"
-          name="name"
-          value={name}
-          onChange={(e) => setName(e?.target?.value)}
-          placeholder="Enter Name"
-          className="border border-black rounded px-2 py-1"
-        />
-      </div>
+      <h1>Login</h1>
+
       <div className="flex gap-2 items-center">
         <label>Email</label>
         <input
@@ -75,11 +57,11 @@ const SIgnup = () => {
           onClick={handleSubmit}
           className="bg-black px-4 py-2 rounded-md text-white"
         >
-          Sign Up
+          Login
         </button>
       </div>
     </div>
   );
 };
 
-export default SIgnup;
+export default Login;

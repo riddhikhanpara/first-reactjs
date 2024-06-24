@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useNavigation } from "react-router-dom";
 
 const Header = () => {
   const router = useNavigate();
+  const userData = localStorage.getItem("user");
   return (
     <div className="bg-white shadow">
       <div className="container px-4 mx-auto">
@@ -12,9 +13,22 @@ const Header = () => {
           <li onClick={() => router("/update")}>Update</li>
           <li onClick={() => router("/list")}>List</li>
           <li onClick={() => router("/delete")}>Delete</li>
-          <li onClick={() => router("/logout")}>Logout</li>
           <li onClick={() => router("/profile")}>Profile</li>
-          <li onClick={() => router("/signup")}>Signup</li>
+          {userData ? (
+            <li
+              onClick={() => {
+                localStorage.removeItem("user");
+                router("/signup");
+              }}
+            >
+              Logout
+            </li>
+          ) : (
+            <>
+              <li onClick={() => router("/login")}>Login</li>
+              <li onClick={() => router("/signup")}>Signup</li>
+            </>
+          )}
         </ul>
       </div>
     </div>
